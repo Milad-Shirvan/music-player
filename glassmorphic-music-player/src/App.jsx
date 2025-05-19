@@ -3,7 +3,7 @@ import { tracks } from "./data/tracks";
 
 function App() {
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
   const [volume, setVolume] = useState(1);
@@ -12,10 +12,9 @@ function App() {
   const currentTrack = tracks[currentTrackIndex];
 
   useEffect(() => {
-    if (audioRef.current) {
-      isPlaying ? audioRef.current.play() : audioRef.current.pause();
-    }
-  }, [currentTrackIndex, isPlaying]);
+    setProgress(0); // Reset progress when track changes
+    setIsPlaying(false); // Stop auto play after switching
+  }, [currentTrackIndex]);
 
   const handleTimeUpdate = () => {
     if (audioRef.current) {
@@ -24,7 +23,9 @@ function App() {
   };
 
   const handleLoadedMetadata = () => {
-    setDuration(audioRef.current.duration);
+    if (audioRef.current) {
+      setDuration(audioRef.current.duration);
+    }
   };
 
   const handleNext = () => {
@@ -39,18 +40,34 @@ function App() {
 
   const handleProgressChange = (e) => {
     const value = parseFloat(e.target.value);
-    audioRef.current.currentTime = value;
-    setProgress(value);
+    if (audioRef.current) {
+      audioRef.current.currentTime = value;
+      setProgress(value);
+    }
   };
 
   const handleVolumeChange = (e) => {
     const value = parseFloat(e.target.value);
     setVolume(value);
-    audioRef.current.volume = value;
+    if (audioRef.current) {
+      audioRef.current.volume = value;
+    }
   };
 
   const handleEnded = () => {
     handleNext();
+  };
+
+  const togglePlayPause = () => {
+    if (!isPlaying) {
+      audioRef.current
+        .play()
+        .then(() => setIsPlaying(true))
+        .catch((err) => console.warn("Playback error:", err));
+    } else {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    }
   };
 
   return (
@@ -60,7 +77,6 @@ function App() {
       <audio
         ref={audioRef}
         src={currentTrack.audio}
-        autoPlay
         onTimeUpdate={handleTimeUpdate}
         onLoadedMetadata={handleLoadedMetadata}
         onEnded={handleEnded}
@@ -68,7 +84,7 @@ function App() {
 
       <div>
         <button onClick={handlePrevious}>⏮️</button>
-        <button onClick={() => setIsPlaying(!isPlaying)}>
+        <button onClick={togglePlayPause}>
           {isPlaying ? "⏸️" : "▶️"}
         </button>
         <button onClick={handleNext}>⏭️</button>
