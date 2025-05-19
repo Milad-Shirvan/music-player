@@ -1,5 +1,8 @@
-import React, { useState, useRef, useEffect } from "react";
-import { tracks } from "./data/tracks";
+import React, { useState, useRef, useEffect } from 'react';
+import { tracks } from './data/tracks';
+import { SkipBack, Play, Pause, SkipForward, Volume2 } from 'lucide-react';
+
+import './styles/App.css';
 
 function App() {
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
@@ -63,7 +66,7 @@ function App() {
       audioRef.current
         .play()
         .then(() => setIsPlaying(true))
-        .catch((err) => console.warn("Playback error:", err));
+        .catch((err) => console.warn('Playback error:', err));
     } else {
       audioRef.current.pause();
       setIsPlaying(false);
@@ -71,9 +74,16 @@ function App() {
   };
 
   return (
-    <div>
+    <div className="glass-container">
+      <img
+        src={currentTrack.cover}
+        alt={currentTrack.title}
+        className="track-cover"
+      />
+
       <h2>{currentTrack.title}</h2>
       <p>{currentTrack.artist}</p>
+
       <audio
         ref={audioRef}
         src={currentTrack.audio}
@@ -82,15 +92,19 @@ function App() {
         onEnded={handleEnded}
       />
 
-      <div>
-        <button onClick={handlePrevious}>⏮️</button>
-        <button onClick={togglePlayPause}>
-          {isPlaying ? "⏸️" : "▶️"}
+      <div className="controls">
+        <button onClick={handlePrevious}>
+          <SkipBack size={24} />
         </button>
-        <button onClick={handleNext}>⏭️</button>
+        <button onClick={togglePlayPause}>
+          {isPlaying ? <Pause size={24} /> : <Play size={24} />}
+        </button>
+        <button onClick={handleNext}>
+          <SkipForward size={24} />
+        </button>
       </div>
 
-      <div>
+      <div className="progress">
         <input
           type="range"
           min="0"
@@ -103,8 +117,8 @@ function App() {
         </span>
       </div>
 
-      <div>
-        <label>🔊</label>
+      <div className="volume">
+        <Volume2 size={20} />
         <input
           type="range"
           min="0"
@@ -115,7 +129,7 @@ function App() {
         />
       </div>
 
-      <div>
+      <div className="next-track">
         <h4>Up Next:</h4>
         <p>{tracks[(currentTrackIndex + 1) % tracks.length].title}</p>
       </div>
