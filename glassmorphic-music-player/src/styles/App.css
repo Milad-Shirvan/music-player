@@ -3,7 +3,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: 'Inter', sans-serif;
-  background: url("/public/background.jpg") no-repeat center center fixed;
+  background: url('/public/background.jpg') no-repeat center center fixed;
   background-size: cover;
   display: flex;
   align-items: center;
@@ -26,7 +26,6 @@ body {
   overflow: visible; /* ⬅ ADD THIS */
 }
 
-
 .glass-container:hover {
   box-shadow: 0 12px 48px rgba(0, 0, 0, 0.35);
   scale: 1.02;
@@ -40,7 +39,6 @@ body {
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
   justify-content: center;
 } */
-
 
 /* Button styling */
 .controls {
@@ -71,7 +69,7 @@ button:focus {
 }
 
 /* Modern styled range input (progress bar) */
-input[type="range"] {
+input[type='range'] {
   -webkit-appearance: none;
   width: 100%;
   height: 6px;
@@ -81,7 +79,7 @@ input[type="range"] {
   transition: background 0.3s;
 }
 
-input[type="range"]::-webkit-slider-thumb {
+input[type='range']::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
   width: 16px;
@@ -93,7 +91,7 @@ input[type="range"]::-webkit-slider-thumb {
   transition: background 0.3s ease;
 }
 
-input[type="range"]::-moz-range-thumb {
+input[type='range']::-moz-range-thumb {
   width: 16px;
   height: 16px;
   background: rgba(255, 255, 255, 0.9);
@@ -103,11 +101,11 @@ input[type="range"]::-moz-range-thumb {
   cursor: pointer;
 }
 
-input[type="range"]:hover {
+input[type='range']:hover {
   background: rgba(255, 255, 255, 0.5);
 }
 
-input[type="range"]::-webkit-slider-thumb:hover {
+input[type='range']::-webkit-slider-thumb:hover {
   background: rgba(255, 255, 255, 1);
 }
 
